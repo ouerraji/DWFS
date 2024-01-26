@@ -1,0 +1,33 @@
+<button class="logout-button" (click)="logout()">Logout</button>
+<br>
+<br>
+<br>
+<br>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>fullname</th>
+
+      <th class="status-column">Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user._id }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.fullName }}</td>
+      <td class="status-column">
+        <span class="status-indicator" [ngClass]="user.isActive ? 'active' : 'inactive'"></span>
+        <span class="status-text" [textContent]="user.isActive ? 'Active' : 'Inactive'"></span>
+      </td>
+      <td>
+        <button *ngIf="!user.isActive" (click)="activateUser(user._id)">Activate</button>
+        <button *ngIf="user.isActive" (click)="deactivateUser(user._id)">Deactivate</button>
+        <button (click)="deleteUser(user._id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
