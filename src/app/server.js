@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const UserModel = require('./models/user'); // Import your Mongoose user model
 const DocumentModel=require('./models/document')
+const FolderModel=require('./models/folder')
+
 
 
 const app = express();
@@ -184,6 +186,56 @@ app.delete('/documents/:id', async (req, res) => {
     res.json(deletedDocument);
   } catch (error) {
     console.error('Error deleting document:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Create folder
+app.post('/createfolder', async (req, res) => {
+  try {
+    console.log('creating folder data', req.body);
+
+    const newFolder = new FolderModel(req.body);
+    const savedFolder = await newFolder.save();
+
+    console.log('folder saved', savedFolder);
+
+    res.status(201).json({ message: 'folder created successfully', user: savedFolder });
+  } catch (error) {
+    console.error('creation failed:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+//get folders
+app.get('/getfolders', async (req, res) => {
+  try {
+
+    const folders = await FolderModel.find();
+
+    res.status(200).json(folders);
+  } catch (error) {
+    console.error('Error fetching folders:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}); 
+
+app.post('/folders/:folderId/add-document', async (req, res) => {
+  try {
+    const { documentId } = req.body;
+    const folderId = req.params.folderId;
+
+    // Find the folder by ID and update the documents array
+    const folder = await FolderModel.findByIdAndUpdate(
+      folderId,
+      { $push: { documents: documentId } },
+      { new: true }
+    );
+
+    // Return the updated folder
+    res.json(folder);
+  } catch (error) {
+    console.error('Error adding document to folder:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });

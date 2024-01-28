@@ -14,6 +14,7 @@ export class DocumentFolderService {
     return this.http.get<any[]>(`${this.apiUrl}/documents`);
   }
   
+  
 
   addDocument(documentData: any): Observable<any> {
     // Set the username of the logged-in user as the 'proprietaire'
@@ -44,5 +45,14 @@ export class DocumentFolderService {
     const apiUrl = `${this.apiUrl}/documents/${documentId}`;
     return this.http.delete<any>(apiUrl);
   }
-  
+  getFolders(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/getfolders`);
+  }
+  addToFolder(folderId: string, payload: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/folders/${folderId}/add-document`, payload);
+  }
+
+  createFolder(folder: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/createfolder`, folder);
+  }
 }
