@@ -1,1 +1,0 @@
-var userModel=require('./')

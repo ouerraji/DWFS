@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { DocumentFolderService } from '../services/document-folder.service';
+import { AuthenticationService } from '../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-folders',
@@ -15,21 +17,27 @@ export class FoldersComponent {
   docToBeAdded: any | null = null;
   selectedDocumentId: string | null = null;
   selectedFolderId: string | null = null;
+  documentsInFolder!:any[]
+  selectedFolderIdToshow!:any;
+  selectedFolderToshow:any | null = null;
+  documentsInSelectedFolder!: any[];
+  username!:string |null;
 
 
-  constructor( private folderService: DocumentFolderService) {}
+  constructor( private folderService: DocumentFolderService,private auth:AuthenticationService,private router:Router) {}
   ngOnInit(): void {
-    
-        this.loadDocuments();
-        this.loadFolders()
+    this.username=this.auth.getLoggedInUsername();
+        this.loadDocuments(this.username);
+        this.loadFolders(this.username);
+        this.getDocumentsInSelectedFolder();
       }
 
       closeFolderListModal() {
-        // Clear the document to be added and hide the folder list modal
         this.docToBeAdded = null;
         this.showFolderListModal = false;
       }
       addToFolder() {
+        
         console.log(this.selectedDocumentId)
         console.log(this.selectedFolderId)
         if (this.selectedDocumentId && this.selectedFolderId) {
@@ -38,7 +46,7 @@ export class FoldersComponent {
     
           this.folderService.addToFolder(folderId, { documentId }).subscribe(
             (response) => {
-              console.log('Document added to folder successfully:', response);
+              this.closeFolderListModal()
             },
             (error) => {
               console.error('Error adding document to folder:', error);
@@ -46,57 +54,80 @@ export class FoldersComponent {
           );
         }
       }
+      logout():void{
+        this.router.navigate(['/login'])
+      }
   createFolder() {
     if (this.newFolderName) {
       const newFolder: any = {
         name: this.newFolderName,
+        proprietaire:this.auth.getLoggedInUsername(),
         documents: []
       };
 
-      // Call the service to create a new folder
       this.folderService.createFolder(newFolder).subscribe(
         response => {
-          // Handle the successful response, e.g., update the UI or show a success message
-          console.log('Folder created successfully:', response);
+          console.log('Dossier creer en succes', response);
           alert("Dossier creer avec succes")
 
           // Clear the input field after creating the folder
           this.newFolderName = '';
-          this.loadFolders()
+          this.loadFolders(this.username)
         },
         error => {
           // Handle errors, e.g., show an error message
-          console.error('Error creating folder:', error);
+          console.error('Error de creation de dossier:', error);
         }
       );
     }
   }
-  private loadDocuments(): void {
-    this.folderService.getDocuments().subscribe(
+  onFolderSelected(folder:any){}
+  private loadDocuments(user:string | null): void {
+    this.folderService.getDocuments(user).subscribe(
       (documents) => {
         this.documents = documents;
-        console.log('Documents loaded successfully:', documents);
       },
       (error) => {
-        console.error('Error loading documents:', error);
+        console.error('Error de telechrager documents:', error);
       }
     );
   }
-  loadFolders() {
-    this.folderService.getFolders().subscribe(folders => {
+  loadFolders(username:string |null) {
+    this.folderService.getFolders(username).subscribe(folders => {
+      console.log("in load func:",username)
       this.folders = folders;
     });
   }
   openFolderListModal(doc: any) {
-    // Set the document to be added to a folder
     this.docToBeAdded = doc;
     this.selectedDocumentId=doc._id
 
-    // Show the folder list modal
     this.showFolderListModal = true;
   }
+  getDocumentsInSelectedFolder() {
 
-  addDocument(folder: any) {
-    
+    if (this.selectedFolderIdToshow) {
+      const folderId = this.selectedFolderIdToshow;
+      this.folderService.getfolderbyid(folderId).subscribe(
+        (folder)=>{
+          this.selectedFolderToshow=folder
+        },
+        (error) => {
+          console.error('Error loading folderr:', error);
+        }
+
+      )
+
+      this.folderService.getDocumentsInFolder(folderId).subscribe(
+        (documents) => {
+          this.documentsInSelectedFolder = documents;
+        },
+        (error) => {
+          console.error('Error de telecharger les documents de dossier selectionner:', error);
+        }
+      );
+    }
   }
+
+  
 }

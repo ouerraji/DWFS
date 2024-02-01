@@ -27,19 +27,17 @@ export class LoginComponent {
       this.authService.loginUser(loginData).subscribe(
         (response) => {
   
-          // Check the role in the response
           const role = response.user.role;
           const isActive = response.user.isActive;
           console.log("status is",isActive)
   
-          // Navigate based on the role
           if (role === 'administrateur') {
-            alert('Loginnnn successful');
+            alert('Connexion réussie !');
             console.log('Login successful:', response);
-            this.router.navigate(['/home-admin']); // Navigate to the admin page
+            this.router.navigate(['/home-admin']); 
           } else if (role === 'standard') {
             if(isActive){
-              alert('Loginnnn successful');
+              alert('Connexion réussie !');
               this.router.navigate(['/home']);
             }
             else {
@@ -47,22 +45,15 @@ export class LoginComponent {
               this.router.navigate(['/login']);
             }
 
-           // console.log('Login successful:', response);
-
-//this.router.navigate(['/home']); // Navigate to the standard user page
           } else {
-            console.error('Unknown role:', role);
+            console.error('role inconnu:', role);
           }
   
-          // Optionally, you can also store the user information in a service for future use
-          // this.authService.setCurrentUser(response.user);
-  
-          // Alert can be removed or replaced with a more user-friendly notification
           
         },
         (error) => {
           console.error('Login failed:', error);
-          alert('Login failed. Please check your credentials.');
+          alert("Échec de la connexion. Veuillez vérifier vos informations d\'identification");
         }
       );
     }

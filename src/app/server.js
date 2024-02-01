@@ -1,9 +1,8 @@
-// Example backend code using Node.js, Express, and Mongoose
 
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const UserModel = require('./models/user'); // Import your Mongoose user model
+const UserModel = require('./models/user'); 
 const DocumentModel=require('./models/document')
 const FolderModel=require('./models/folder')
 
@@ -26,17 +25,17 @@ app.get('/', (req, res) => {
 // Handle registration
 app.post('/register', async (req, res) => {
   try {
-    console.log('Received registration data:', req.body);
+    console.log(' data:', req.body);
 
     const newUser = new UserModel(req.body);
     const savedUser = await newUser.save();
 
-    console.log('User saved to the database:', savedUser);
+    console.log('User enregistrer:', savedUser);
 
-    res.status(201).json({ message: 'User registered successfully', user: savedUser });
+    res.status(201).json({ message: 'User enregistrer en success', user: savedUser });
   } catch (error) {
-    console.error('Registration failed:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error('erreur de Registration:', error);
+    res.status(500).json({ error: ' Server Error' });
   }
 });
 
@@ -45,16 +44,13 @@ app.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    // Find the user by username and password
     const user = await UserModel.findOne({ username, password });
 
     if (user) {
       
-      // Login successful
       res.status(200).json({ message: 'Login successful', user });
     } else {
-      // Login failed
-      res.status(401).json({ error: 'Invalid credentials' });
+      res.status(401).json({ error: 'Invalid infos' });
     }
   } catch (error) {
     console.error('Login failed:', error);
@@ -66,10 +62,8 @@ app.post('/login', async (req, res) => {
 
 app.get('/users', async (req, res) => {
   try {
-    // Get the role parameter from the query string, default to 'standard' if not provided
     const role = req.query.role || 'standard';
 
-    // Retrieve users with the specified role from the database
     const users = await UserModel.find({ role });
 
     res.status(200).json(users);
@@ -86,7 +80,6 @@ app.delete('/users/:id', async (req, res) => {
   try {
     const userId = req.params.id;
 
-    // Delete the user from the database
     await UserModel.findByIdAndDelete(userId);
 
     res.status(200).json({ message: 'User deleted successfully' });
@@ -97,12 +90,10 @@ app.delete('/users/:id', async (req, res) => {
 });
 
 
-// Activate user route
 app.put('/users/:id/activate', async (req, res) => {
   try {
     const userId = req.params.id;
 
-    // Update user status to active
     await UserModel.findByIdAndUpdate(userId, { isActive: true });
 
     res.status(200).json({ message: 'User activated successfully' });
@@ -112,12 +103,10 @@ app.put('/users/:id/activate', async (req, res) => {
   }
 });
 
-// Deactivate user route
 app.put('/users/:id/deactivate', async (req, res) => {
   try {
     const userId = req.params.id;
 
-    // Update user status to inactive
     await UserModel.findByIdAndUpdate(userId, { isActive: false });
 
     res.status(200).json({ message: 'User deactivated successfully' });
@@ -131,13 +120,11 @@ app.put('/users/:id/deactivate', async (req, res) => {
 
 
 
-// Get all documents route
-app.get('/documents', async (req, res) => {
+app.get('/documents/:username', async (req, res) => {
   try {
-    const username = req.query.username; // Get the username from the query parameter
-
-    // Filter documents based on the username
-    const documents = await DocumentModel.find({ proprietaire: username });
+    const user = req.params.username;
+console.log(user)
+    const documents = await DocumentModel.find({ proprietaire: user });
 
     res.status(200).json(documents);
   } catch (error) {
@@ -146,12 +133,10 @@ app.get('/documents', async (req, res) => {
   }
 });
 
-// Add new document route
-// Handle document creation
+
 app.post('/documents', async (req, res) => {
   try {
     console.log('recieved data:',req.body)
-    // Save the document to the database
     const newDocument = new DocumentModel(req.body);
     const savedDocument = await newDocument.save();
     console.log('Document added to database:',req.body)
@@ -164,7 +149,6 @@ app.post('/documents', async (req, res) => {
 });
 
 
-// Modify existing document route
 app.put('/documents/:id', async (req, res) => {
   try {
     const updatedDocument = await DocumentModel.findByIdAndUpdate(
@@ -179,7 +163,6 @@ app.put('/documents/:id', async (req, res) => {
   }
 });
 
-// Delete document route
 app.delete('/documents/:id', async (req, res) => {
   try {
     const deletedDocument = await DocumentModel.findByIdAndDelete(req.params.id);
@@ -190,10 +173,9 @@ app.delete('/documents/:id', async (req, res) => {
   }
 });
 
-// Create folder
 app.post('/createfolder', async (req, res) => {
   try {
-    console.log('creating folder data', req.body);
+    console.log('in server creating folder data', req.body);
 
     const newFolder = new FolderModel(req.body);
     const savedFolder = await newFolder.save();
@@ -207,32 +189,65 @@ app.post('/createfolder', async (req, res) => {
   }
 });
 
-//get folders
-app.get('/getfolders', async (req, res) => {
+app.get('/getfolders/:username', async (req, res) => {
   try {
-
-    const folders = await FolderModel.find();
+    const user = req.params.username;
+    const folders = await FolderModel.find({proprietaire:user});
 
     res.status(200).json(folders);
   } catch (error) {
     console.error('Error fetching folders:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-}); 
+});
+
+
+
+app.get('/getdocinfolder/:folderId', async (req, res) => {
+  try {
+    const folderId = req.params.folderId;
+
+    const folder = await FolderModel.findById(folderId).populate('documents');
+
+    if (!folder) {
+      return res.status(404).json({ error: 'Folder not found' });
+    }
+
+    return res.json(folder.documents);
+  } catch (error) {
+    console.error('Error retrieving documents in folder:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/getfolderbyid/:folderId', async (req, res) => {
+  try {
+    const folderId = req.params.folderId;
+
+    const folder = await FolderModel.findById(folderId);
+
+    if (!folder) {
+      return res.status(404).json({ error: 'Folder not found' });
+    }
+
+    return res.json(folder);
+  } catch (error) {
+    console.error('Error retrieving documents in folder:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 app.post('/folders/:folderId/add-document', async (req, res) => {
   try {
     const { documentId } = req.body;
     const folderId = req.params.folderId;
 
-    // Find the folder by ID and update the documents array
     const folder = await FolderModel.findByIdAndUpdate(
       folderId,
       { $push: { documents: documentId } },
       { new: true }
     );
 
-    // Return the updated folder
     res.json(folder);
   } catch (error) {
     console.error('Error adding document to folder:', error);

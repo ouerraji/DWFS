@@ -12,12 +12,7 @@ const routes: Routes = [
   { path: '', component: InscriptionComponent },
   { path: 'home', component: HomeComponent },
   { path: 'home-admin', component: HomeAdminComponent },
-  { path: 'folders', component: FoldersComponent }
-
-
-
-
-  
+  { path: 'folders', component: FoldersComponent }  
 ];
 
 @NgModule({

@@ -7,19 +7,17 @@ import { AuthenticationService } from './authentication.service';
   providedIn: 'root'
 })
 export class DocumentFolderService {
-  private apiUrl = 'http://localhost:3000'; // Replace with your actual backend API endpoint
+  private apiUrl = 'http://localhost:3000'; 
 
   constructor(private http: HttpClient,private authService:AuthenticationService) {}
-  getDocuments(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/documents`);
+  getDocuments(user:string | null): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/documents/${user}`);
   }
   
   
 
   addDocument(documentData: any): Observable<any> {
-    // Set the username of the logged-in user as the 'proprietaire'
     documentData.proprietaire = this.authService.getLoggedInUsername();
-    console.log('Adding document with data:', documentData);
   
     return this.http.post(`${this.apiUrl}/documents`, documentData)
       .pipe(
@@ -45,8 +43,8 @@ export class DocumentFolderService {
     const apiUrl = `${this.apiUrl}/documents/${documentId}`;
     return this.http.delete<any>(apiUrl);
   }
-  getFolders(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/getfolders`);
+  getFolders(username:string | null): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/getfolders/${username}`);
   }
   addToFolder(folderId: string, payload: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/folders/${folderId}/add-document`, payload);
@@ -54,5 +52,11 @@ export class DocumentFolderService {
 
   createFolder(folder: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/createfolder`, folder);
+  }
+  getDocumentsInFolder(folderId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/getdocinfolder/${folderId}`);
+  }
+  getfolderbyid(folderId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/getfolderbyid/${folderId}`);
   }
 }

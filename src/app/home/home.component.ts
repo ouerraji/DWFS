@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DocumentFolderService } from '../services/document-folder.service';
 import { AuthenticationService } from '../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,17 +11,17 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class HomeComponent {
   documentForm!: FormGroup;
-  documents!: any[]; // Replace 'any[]' with the actual type of your document model
+  documents!: any[]; 
   isEditMode = false;
   selectedDocument: any;
   welcomeusername!:string |null;
 
-  constructor(private fb: FormBuilder, private documentService: DocumentFolderService,private auth:AuthenticationService) {}
+  constructor(private fb: FormBuilder, private documentService: DocumentFolderService,private auth:AuthenticationService,private router:Router) {}
 
   ngOnInit(): void {
 const loggedusername=this.auth.getLoggedInUsername()
 this.welcomeusername=loggedusername
-console.log("usernme is ",loggedusername)
+console.log("username is ",loggedusername)
     this.documentForm = this.fb.group({
       nom: ['', Validators.required],
       extension: ['', Validators.required],
@@ -30,54 +31,50 @@ console.log("usernme is ",loggedusername)
       chemin: ['', Validators.required]
     });
 
-    this.loadDocuments();
+    this.loadDocuments(this.welcomeusername);
   }
 
   onSubmit(): void {
-    // Comment out or remove the following block for testing purposes
-    // if (this.documentForm.valid) {
+    
     const formData = this.documentForm.value;
   
-    // Set the 'proprietaire' field to the logged-in username
     formData.proprietaire = this.welcomeusername;
   
     if (this.isEditMode) {
-      // Modify existing document
       this.documentService.modifyDocument(this.selectedDocument._id, formData).subscribe(
         (response) => {
-          console.log('Document modified successfully:', response);
+          console.log('Document modifié en success:', response);
           this.clearForm();
-          this.loadDocuments();
+          this.loadDocuments(this.welcomeusername);
         },
         (error) => {
-          console.error('Document modification failed:', error);
+          console.error('erreur modification de document:', error);
         }
       );
     } else {
-      // Add new document
       this.documentService.addDocument(formData).subscribe(
         (response) => {
-          console.log('Document added successfully:', response);
+          console.log('Document ajouter en succes:', response);
           this.clearForm();
-          this.loadDocuments();
+          this.loadDocuments(this.welcomeusername);
         },
         (error) => {
-          console.error('Document addition failed:', error);
+          console.error("erreur d'ajout de Document ", error);
         }
       );
     }
-    // }
   }
   
   
   
   
-
+  managefolders() {
+    this.router.navigate(['/folders'])
+  }
   editDocument(document: any): void {
     this.isEditMode = true;
     this.selectedDocument = document;
 
-    // Set form values for editing
     this.documentForm.patchValue({
       nom: document.nom,
       extension: document.extension,
@@ -90,25 +87,23 @@ console.log("usernme is ",loggedusername)
 
   deleteDocument(): void {
     if (this.selectedDocument) {
-      // Delete the selected document
       this.documentService.deleteDocument(this.selectedDocument._id).subscribe(
         (response) => {
-          console.log('Document deleted successfully:', response);
+          console.log('Document supprimeé en success:', response);
           this.clearForm();
-          this.loadDocuments();
+          this.loadDocuments(this.welcomeusername);
         },
         (error) => {
-          console.error('Document deletion failed:', error);
+          console.error('erreur de suppression de document:', error);
         }
       );
     }
   }
 
-  private loadDocuments(): void {
-    this.documentService.getDocuments().subscribe(
+  private loadDocuments(user:string | null): void {
+    this.documentService.getDocuments(user).subscribe(
       (documents) => {
         this.documents = documents;
-        console.log('Documents loaded successfully:', documents);
       },
       (error) => {
         console.error('Error loading documents:', error);

@@ -1,28 +1,27 @@
-<!-- inscription.component.html -->
 
 <div class="auth-container">
   <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
     <h1>Inscription</h1>
-    <label for="phoneNumber">Phone Number:</label>
+    <label for="phoneNumber">Numéro de téléphone:</label>
     <input type="tel" id="phoneNumber" formControlName="phoneNumber" required pattern="^\+(?:[0-9] ?){6,14}[0-9]">
 
-    <label for="fullName">Full Name:</label>
+    <label for="fullName">Nom complet:</label>
     <input type="text" id="fullName" formControlName="fullName" required>
 
-    <label for="username">Username:</label>
+    <label for="username">Nom d'utilisateur:</label>
     <input type="text" id="username" formControlName="username" required>
 
-    <label for="password">Password:</label>
+    <label for="password">Mot de passe:</label>
     <input type="password" id="password" formControlName="password" required>
 
-    <label for="role">Role:</label>
+    <label for="role">Rôle:</label>
     <select id="role" formControlName="role" required>
       <option value="administrateur">Administrateur</option>
-      <option value="standard" selected>Standard User</option>
+      <option value="standard" selected>Utilisateur Standard</option>
     </select>
 
-    <button type="submit">Register</button>
+    <button type="submit">S'inscrire</button>
   </form>
 
-  <p (click)="switchToLogin()">Switch to Login</p>
+  <p (click)="switchToLogin()">Passer a l'authentification</p>
 </div>

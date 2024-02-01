@@ -1,4 +1,4 @@
-<button class="logout-button" (click)="logout()">Logout</button>
+<button class="logout-button" (click)="logout()">Deconnexion</button>
 <br>
 <br>
 <br>
@@ -7,8 +7,8 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th>Username</th>
-      <th>fullname</th>
+      <th>Nom d'utilisateur</th>
+      <th>Nom complet</th>
 
       <th class="status-column">Status</th>
       <th>Actions</th>
@@ -24,9 +24,9 @@
         <span class="status-text" [textContent]="user.isActive ? 'Active' : 'Inactive'"></span>
       </td>
       <td>
-        <button *ngIf="!user.isActive" (click)="activateUser(user._id)">Activate</button>
-        <button *ngIf="user.isActive" (click)="deactivateUser(user._id)">Deactivate</button>
-        <button (click)="deleteUser(user._id)">Delete</button>
+        <button *ngIf="!user.isActive" (click)="activateUser(user._id)">Activer</button>
+        <button *ngIf="user.isActive" (click)="deactivateUser(user._id)">Desactiver</button>
+        <button (click)="deleteUser(user._id)">Supprimer</button>
       </td>
     </tr>
   </tbody>

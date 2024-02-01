@@ -1,41 +1,38 @@
-<p>Home works!</p>
-<h1>Welcome {{ welcomeusername }}</h1>
+<h1>Salut {{ welcomeusername }}!</h1>
+<button type="button" (click)="managefolders()" class="manage-button">Gérer les dossiers</button>
 
-<!-- Document form -->
+
 <form [formGroup]="documentForm" (ngSubmit)="onSubmit()" class="document-form">
-  <h2>{{ isEditMode ? 'Modify Document' : 'Add Document' }}</h2>
+  <h2>{{ isEditMode ? 'Modifier Document' : 'Ajouter Document' }}</h2>
 
-  <label for="chemin">Document Path:</label>
+  <label for="chemin">Chemin du document:</label>
   <input type="text" id="chemin" formControlName="chemin" required>
 
-  <label for="nom">Document Name:</label>
+  <label for="nom">Nom du document:</label>
   <input type="text" id="nom" formControlName="nom" required>
 
   <label for="extension">Extension:</label>
   <input type="text" id="extension" formControlName="extension" required>
 
-  <label for="taille">Size (in bytes):</label>
+  <label for="taille">Taille (en octets):</label>
   <input type="number" id="taille" formControlName="taille" required>
 
   <label for="type">Type:</label>
   <input type="text" id="type" formControlName="type" required>
 
-  <button type="submit" class="modify-button">{{ isEditMode ? 'Modify Document' : 'Add Document' }}</button>
+  <button type="submit" class="modify-button">{{ isEditMode ? 'Modifier Document' : 'Ajouter Document' }}</button>
 
-  <!-- Display delete button only in edit mode -->
-  <button *ngIf="isEditMode" type="button" (click)="deleteDocument()" class="delete-button">Delete Document</button>
+  <button *ngIf="isEditMode" type="button" (click)="deleteDocument()" class="delete-button">Supprimer Document</button>
 </form>
 
-<!-- Display list of documents -->
 <table class="document-table">
   <thead>
     <tr>
-      <th>Path</th>
-      <th>Name</th>
+      <th>Chemin</th>
+      <th>Nom</th>
       <th>Extension</th>
-      <th>Size (bytes)</th>
+      <th>Taille (en octets)</th>
       <th>Type</th>
-      <th>Owner</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -46,9 +43,8 @@
       <td>{{ doc.extension }}</td>
       <td>{{ doc.taille }}</td>
       <td>{{ doc.type }}</td>
-      <td>{{ doc.proprietaire }}</td>
       <td>
-        <button (click)="editDocument(doc)">Edit</button>
+        <button (click)="editDocument(doc)">Modifier</button>
       </td>
     </tr>
   </tbody>

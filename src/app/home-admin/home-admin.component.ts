@@ -8,17 +8,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./home-admin.component.css']
 })
 export class HomeAdminComponent {
-  users: any[] = []; // Replace 'any[]' with the actual type of your user model
+  users: any[] = []; 
 
   constructor(private userService: UserServicesService,private router:Router) {}
 
   ngOnInit(): void {
-    // Load the list of users when the component is initialized
     this.loadUsers();
   }
 
   loadUsers(): void {
-    // Assuming you have a method in your user service to fetch the list of users
     this.userService.getUsers().subscribe(
       (users) => {
         this.users = users;
@@ -36,7 +34,6 @@ export class HomeAdminComponent {
     this.userService.activateUser(userId).subscribe(
       (response) => {
         console.log('User activated successfully:', response);
-        // Reload the list of users after activation
         this.loadUsers();
       },
       (error) => {
@@ -49,7 +46,6 @@ export class HomeAdminComponent {
     this.userService.deactivateUser(userId).subscribe(
       (response) => {
         console.log('User deactivated successfully:', response);
-        // Reload the list of users after deactivation
         this.loadUsers();
       },
       (error) => {
@@ -63,7 +59,6 @@ export class HomeAdminComponent {
       this.userService.deleteUser(userId).subscribe(
         (response) => {
           console.log('User deleted successfully:', response);
-          // Reload the list of users after deletion
           this.loadUsers();
         },
         (error) => {

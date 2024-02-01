@@ -1,47 +1,75 @@
-<p>folders works!</p>
-<!-- document-organizer.component.html -->
+<button class="logout-button" (click)="logout()">Deconnexion</button>
 
-<div>
-    <!-- Create Folder Section -->
+<div class="document-organizer">
+  <p>Les Dossier de : {{username}}</p>
+
+  <div>
     <div>
-      <label for="folderName">Folder Name:</label>
+      <label for="folderName">Nom de dossier:</label>
       <input type="text" id="folderName" [(ngModel)]="newFolderName" required>
-      <button (click)="createFolder()">Create Folder</button>
+      <button class="add-to-folder-button" (click)="createFolder()">Creer dossier</button>
     </div>
     <table class="document-table">
-        <thead>
-          <tr>
-            <th>Path</th>
-            <th>Name</th>
-            <th>Extension</th>
-            <th>Size (bytes)</th>
-            <th>Type</th>
-            <th>Owner</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let doc of documents">
-            <td>{{ doc.chemin }}</td>
-            <td>{{ doc.nom }}</td>
-            <td>{{ doc.extension }}</td>
-            <td>{{ doc.taille }}</td>
-            <td>{{ doc.type }}</td>
-            <td>{{ doc.proprietaire }}</td>
-            <td>
-              <!-- Button to trigger modal with folder list -->
-              <button (click)="openFolderListModal(doc)">Add to folder</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-</div>
+      <thead>
+        <tr>
+          <th>Chemin</th>
+          <th>Nom</th>
+          <th>Extension</th>
+          <th>Taille (en octets)</th>
+          <th>Type</th>
+          <th>proprietaire</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let doc of documents">
+          <td>{{ doc.chemin }}</td>
+          <td>{{ doc.nom }}</td>
+          <td>{{ doc.extension }}</td>
+          <td>{{ doc.taille }}</td>
+          <td>{{ doc.type }}</td>
+          <td>{{ doc.proprietaire }}</td>
+          <td>
+            <button (click)="openFolderListModal(doc)">Ajouter au dossier</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-<!-- Modal for Folder List -->
-<div *ngIf="showFolderListModal">
-    <label for="folderSelect">Select Folder:</label>
+  <div class="folder-list-modal" *ngIf="showFolderListModal">
+    <label for="folderSelect">Choisir dossier:</label>
     <select id="folderSelect" [(ngModel)]="selectedFolderId">
       <option *ngFor="let folder of folders" [value]="folder._id">{{ folder.name }}</option>
     </select>
-    <button (click)="addToFolder()">Add to Selected Folder</button>
+    <button (click)="addToFolder()">Ajouter au dossier selectionner</button>
   </div>
+
+  <div class="selected-folder-container">
+    <h2 class="select-folder-label">Choisir Dossier</h2>
+    <select class="select-folder-select" id="folderSelectToshow" [(ngModel)]="selectedFolderIdToshow" (change)="getDocumentsInSelectedFolder()">
+      <option *ngFor="let folder of folders" [value]="folder._id">{{ folder.name }}</option>
+    </select>
+
+    <table class="selected-folder-table" *ngIf="selectedFolderToshow">
+      <thead>
+        <tr>
+          <th>Chemin</th>
+          <th>Nom</th>
+          <th>Extension</th>
+          <th>Taill (en octets)</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let document of documentsInSelectedFolder">
+          <td>{{ document.chemin }}</td>
+          <td>{{ document.nom }}</td>
+          <td>{{ document.extension }}</td>
+          <td>{{ document.taille }}</td>
+          <td>{{ document.type }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

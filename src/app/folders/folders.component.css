@@ -1,0 +1,217 @@
+.logout-button {
+
+  position: absolute;
+
+  top: 20px;
+
+  right: 35px;
+
+  display: block;
+
+  width: auto;
+
+  padding: 10px;
+
+  font-size: 18px;
+
+  background-color: #007bff;
+
+  color: #fff;
+
+  border: none;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+
+  margin-bottom: 0;
+
+}
+.document-organizer {
+    font-family: Arial, sans-serif;
+    color: #333;
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  }
+  
+  .document-organizer h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .document-organizer label {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .document-organizer input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    margin-left: -5px;
+    margin-right: 10px;
+  }
+  
+  .document-organizer button {
+    width: 200px;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  
+  .document-organizer button:hover {
+    background-color: #0062cc;
+  }
+  
+  .document-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .document-table th,
+  .document-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .document-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .document-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .folder-list-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+  
+  .folder-list-modal label {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .folder-list-modal select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  .folder-list-modal button {
+    width: 190px;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  .folder-list-modal button:hover {
+    background-color: #0062cc;
+  }
+  
+  .folder-list-modal p {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .folder-list-modal p a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .folder-list-modal p a:hover {
+    text-decoration: underline;
+  }
+  
+  .selected-folder-container {
+    margin-top: 30px;
+  }
+  
+  .selected-folder-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .selected-folder-container label {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .selected-folder-container select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  .selected-folder-container table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .selected-folder-container th,
+  .selected-folder-container td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .selected-folder-container th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .selected-folder-container tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }

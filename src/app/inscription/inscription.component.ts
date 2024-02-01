@@ -26,17 +26,15 @@ export class InscriptionComponent implements OnInit {
 
   onSubmit() {
     const userData = this.registrationForm.value;
-    console.log('Form data:', userData);
   
     this.authService.registerUser(userData).subscribe(
       (response) => {
-        console.log('Registration successful:', response);
-        alert('Account created successfully');
+        console.log('Registration en succes:', response);
+        alert('Compte créé avec succès');
         this.router.navigate(['/login'])
-        console.log('User data from server:', response.user); // Add this line
       },
       (error) => {
-        console.error('Registration failed:', error);
+        console.error('echec de registration', error);
       }
     );
   }

@@ -1,15 +1,15 @@
 
 <div class="auth-container">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <label for="username">Username:</label>
+      <label for="username">Nom d'utilisateur:</label>
       <input type="text" id="username" formControlName="username" required>
   
-      <label for="password">Password:</label>
+      <label for="password">Mot de passe:</label>
       <input type="password" id="password" formControlName="password" required>
   
       <button type="submit">Login</button>
     </form>
   
-    <p (click)="switchToRegistration()">Switch to Registration</p>
+    <p (click)="switchToRegistration()">Passer à l'inscription</p>
   </div>
   

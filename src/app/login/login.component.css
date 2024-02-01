@@ -1,5 +1,5 @@
 p {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
   color: #333;
 }
@@ -66,7 +66,7 @@ p {
 }
 
 .auth-container p {
-  font-size: 14px;
+  font-size: 17px;
   color: #007bff;
   text-align: center;
   margin-top: 20px;
